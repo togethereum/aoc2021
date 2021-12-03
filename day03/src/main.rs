@@ -3,7 +3,8 @@ use std::fs::File;
 use std::io::Read;
 
 fn main() {
-    println!("Hello, world!");
+    let (most_common, least_common) = most_and_least_common_binary_digits_from_file("input.txt");
+    println!("{}", most_common * least_common);
 }
 
 fn read_lines_from_file(filename: &str) -> Vec<String> {
