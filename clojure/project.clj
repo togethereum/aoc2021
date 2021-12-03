@@ -5,4 +5,5 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.10.3"]]
   :repl-options {:init-ns aoc2021.core}
+  :profiles {:dev {:resource-paths ["resources"]}}
   :main aoc2021.core)

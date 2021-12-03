@@ -10,13 +10,14 @@
 (defn solve-day
   "Solve the given day dynamically loading its namespace."
   [day]
-  (let [solve (resolve-fn (str "aoc2021.day" day) "solve")]
-    (solve)))
+  (let [solve (resolve-fn (str "aoc2021.day" day) "solve")
+        input (str "prod/day" day ".txt")]
+    (solve input)))
 
 (defn -main
   "Run the program."
   [& args]
   (let [day (first args)]
-    (solve-day day)))
+    (println (solve-day day))))
 
 
