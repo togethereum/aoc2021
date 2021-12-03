@@ -64,6 +64,20 @@ fn most_and_least_common_binary_digits_from_file(filename: &str) -> (u32, u32) {
     (most_common_number, least_common_number)
 }
 
+fn filter_at_index(v: &Vec<String>, index: usize, default_char: char) -> Vec<String> {
+    let c = most_common_binary_digit_at(&v, index, default_char);
+    v.iter().filter(|s| s.chars().nth(index).unwrap() == c).map(|s| s.to_string()).collect()
+}
+
+fn filter_until_one_remains(v: &Vec<String>, i: usize, default_char: char) -> String {
+    let filtered = filter_at_index(v, i, default_char);
+    return if filtered.len() == 1 {
+        filtered[0].clone()
+    } else {
+        filter_until_one_remains(&filtered, i + 1, default_char)
+    }
+}
+
 #[test]
 fn test_most_and_least_common_binary_digits_from_file() {
     let (most_common, least_common) = most_and_least_common_binary_digits_from_file("test_input.txt");
@@ -86,4 +100,31 @@ fn test_most_common_character_at() {
 #[test]
 fn test_binary_string_to_number() {
     assert_eq!(binary_string_to_number("1101"), 13);
+}
+
+#[test]
+fn test_filter_at_index() {
+    let v = vec![
+        "1100".to_string(),
+        "1110".to_string(),
+        "1000".to_string(),
+        "1000".to_string(),
+    ];
+    let filtered_0 = filter_at_index(&v, 0, '0');
+    let filtered_1 = filter_at_index(&v, 1, '0');
+    let filtered_2 = filter_at_index(&v, 2, '0');
+    assert_eq!(filtered_0.len(), 4);
+    assert_eq!(filtered_1.len(), 2);
+    assert_eq!(filtered_2.len(), 3);
+}
+
+#[test]
+fn test_filter_until_one_remains() {
+    let v = vec![
+        "1100".to_string(),
+        "1110".to_string(),
+        "1000".to_string(),
+        "1010".to_string(),
+    ];
+    assert_eq!(filter_until_one_remains(&v, 0, '0'), "1000");
 }
