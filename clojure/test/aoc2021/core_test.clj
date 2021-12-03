@@ -2,6 +2,8 @@
   (:require [clojure.test :refer :all]
             [aoc2021.core :refer :all]))
 
+(defn dummy [] 42)
+
 (deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+  (testing "Resolve fn"
+    (is (= 42 ((resolve-fn "aoc2021.core-test" "dummy"))))))
