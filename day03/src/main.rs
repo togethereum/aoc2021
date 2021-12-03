@@ -5,6 +5,9 @@ use std::io::Read;
 fn main() {
     let (most_common, least_common) = most_and_least_common_binary_digits_from_file("input.txt");
     println!("{}", most_common * least_common);
+
+    let (oxygen, co2) = puzzle_two("input.txt");
+    println!("{}", oxygen * co2);
 }
 
 fn read_lines_from_file(filename: &str) -> Vec<String> {
@@ -64,18 +67,26 @@ fn most_and_least_common_binary_digits_from_file(filename: &str) -> (u32, u32) {
     (most_common_number, least_common_number)
 }
 
-fn filter_at_index(v: &Vec<String>, index: usize, default_char: char) -> Vec<String> {
+fn filter_at_index(v: &Vec<String>, index: usize, complement_most_common: bool, default_char: char) -> Vec<String> {
     let c = most_common_binary_digit_at(&v, index, default_char);
+    let c = if complement_most_common { complement_binary_character(c) } else { c };
     v.iter().filter(|s| s.chars().nth(index).unwrap() == c).map(|s| s.to_string()).collect()
 }
 
-fn filter_until_one_remains(v: &Vec<String>, i: usize, default_char: char) -> String {
-    let filtered = filter_at_index(v, i, default_char);
+fn filter_until_one_remains(v: &Vec<String>, i: usize, complement_most_common: bool, default_char: char) -> String {
+    let filtered = filter_at_index(v, i, complement_most_common, default_char);
     return if filtered.len() == 1 {
         filtered[0].clone()
     } else {
-        filter_until_one_remains(&filtered, i + 1, default_char)
+        filter_until_one_remains(&filtered, i + 1, complement_most_common, default_char)
     }
+}
+
+fn puzzle_two(filename: &str) -> (u32, u32) {
+    let lines = read_lines_from_file(filename);
+    let oxygen = filter_until_one_remains(&lines, 0, false, '1');
+    let co2 = filter_until_one_remains(&lines, 0, true, '1');
+    (binary_string_to_number(&oxygen), binary_string_to_number(&co2))
 }
 
 #[test]
@@ -110,9 +121,9 @@ fn test_filter_at_index() {
         "1000".to_string(),
         "1000".to_string(),
     ];
-    let filtered_0 = filter_at_index(&v, 0, '0');
-    let filtered_1 = filter_at_index(&v, 1, '0');
-    let filtered_2 = filter_at_index(&v, 2, '0');
+    let filtered_0 = filter_at_index(&v, 0, false, '0');
+    let filtered_1 = filter_at_index(&v, 1, false, '0');
+    let filtered_2 = filter_at_index(&v, 2, false, '0');
     assert_eq!(filtered_0.len(), 4);
     assert_eq!(filtered_1.len(), 2);
     assert_eq!(filtered_2.len(), 3);
@@ -126,5 +137,12 @@ fn test_filter_until_one_remains() {
         "1000".to_string(),
         "1010".to_string(),
     ];
-    assert_eq!(filter_until_one_remains(&v, 0, '0'), "1000");
+    assert_eq!(filter_until_one_remains(&v, 0, false, '0'), "1000");
+}
+
+#[test]
+fn test_puzzle_two() {
+    let (oxygen, co2) = puzzle_two("test_input.txt");
+    assert_eq!(oxygen, 23);
+    assert_eq!(co2, 10);
 }
