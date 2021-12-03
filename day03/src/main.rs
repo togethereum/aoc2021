@@ -33,40 +33,28 @@ fn most_common_character_at(v: &Vec<String>, index: usize) -> char {
     max_char
 }
 
-fn least_common_character_at(v: &Vec<String>, index: usize) -> char {
-    let mut char_counts = HashMap::new();
-    for line in v {
-        let c = line.chars().nth(index).unwrap();
-        let count = char_counts.entry(c).or_insert(0);
-        *count += 1;
-    }
-    let mut min_count = std::usize::MAX;
-    let mut min_char = ' ';
-    for (c, count) in char_counts {
-        if count < min_count {
-            min_count = count;
-            min_char = c;
-        }
-    }
-    min_char
-}
-
 fn binary_string_to_number(s: &str) -> u32 {
     isize::from_str_radix(s, 2).unwrap() as u32
+}
+
+fn complement_binary_character(c: char) -> char {
+    match c {
+        '0' => '1',
+        '1' => '0',
+        _ => panic!("invalid character"),
+    }
 }
 
 fn most_and_least_common_binary_digits_from_file(filename: &str) -> (u32, u32) {
     let lines = read_lines_from_file(filename);
     let mut most_common_digits = String::new();
-    for i in 0..lines[0].len() {
-        most_common_digits.push(most_common_character_at(&lines, i));
-    }
-    let most_common_number = binary_string_to_number(&most_common_digits);
-
     let mut least_common_digits = String::new();
     for i in 0..lines[0].len() {
-        least_common_digits.push(least_common_character_at(&lines, i));
+        let c = most_common_character_at(&lines, i);
+        most_common_digits.push(c);
+        least_common_digits.push(complement_binary_character(c))
     }
+    let most_common_number = binary_string_to_number(&most_common_digits);
     let least_common_number = binary_string_to_number(&least_common_digits);
     (most_common_number, least_common_number)
 }
