@@ -12,6 +12,11 @@ struct Board {
     last_called: u8,
 }
 
+struct BingoGame {
+    boards: Vec<Board>,
+    drawn_numbers: Vec<u8>,
+}
+
 fn draw_number(board: &mut Board, number: u8) {
     let mut found = false;
     for row in 0..board.cells.len() {
@@ -68,6 +73,38 @@ fn calculate_score(board: &Board) -> u32 {
         }
     }
     return score * board.last_called as u32;
+}
+
+fn parse_bingo_game(input: Vec<String>) -> BingoGame {
+    let mut bingo_game = BingoGame {
+        boards: Vec::new(),
+        drawn_numbers: Vec::new(),
+    };
+    bingo_game.drawn_numbers = input[0].split(",").map(|x| x.parse::<u8>().unwrap()).collect();
+
+    let mut board = Board {
+        cells: Vec::new(),
+        last_called: 0,
+    };
+    for line in input[1..].iter() {
+        if line.is_empty() {
+            bingo_game.boards.push(board);
+            board = Board {
+                cells: Vec::new(),
+                last_called: 0,
+            };
+            continue;
+        }
+
+        let row = line.split_whitespace().map(|x| BingoNumber {
+            number: x.parse::<u8>().unwrap(),
+            is_called: false,
+        }).collect();
+        board.cells.push(row);
+    }
+    bingo_game.boards.push(board);
+
+    return bingo_game;
 }
 
 #[test]
@@ -149,4 +186,21 @@ fn test_drawing() {
 
     draw_number(&mut board, 2);
     assert!(is_bingo(&board));
+}
+
+#[test]
+fn test_parse_bingo_game() {
+    let input = vec![
+        "1,2".to_string(),
+        "1 2".to_string(),
+        "3 4".to_string(),
+        "".to_string(),
+        "1 3".to_string(),
+        "2 4".to_string(),
+        ].iter().map(|x| x.to_string()).collect();
+    let bingo_game = parse_bingo_game(input);
+    assert!(bingo_game.drawn_numbers.contains(&1));
+    assert!(bingo_game.drawn_numbers.contains(&2));
+    assert!(bingo_game.boards.len() == 2);
+    assert!(bingo_game.boards[0].cells[0][0].number == 1);
 }
