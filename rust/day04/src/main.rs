@@ -5,16 +5,19 @@ fn main() {
     println!("Hello, world!");
 }
 
+#[derive(Debug)]
 struct BingoNumber {
     number: u8,
     is_called: bool,
 }
 
+#[derive(Debug)]
 struct Board {
     cells: Vec<Vec<BingoNumber>>,
     last_called: u8,
 }
 
+#[derive(Debug)]
 struct BingoGame {
     boards: Vec<Board>,
     drawn_numbers: Vec<u8>,
@@ -89,7 +92,7 @@ fn parse_bingo_game(input: Vec<String>) -> BingoGame {
         cells: Vec::new(),
         last_called: 0,
     };
-    for line in input[1..].iter() {
+    for line in input[2..].iter() {
         if line.is_empty() {
             bingo_game.boards.push(board);
             board = Board {
@@ -110,13 +113,14 @@ fn parse_bingo_game(input: Vec<String>) -> BingoGame {
     return bingo_game;
 }
 
-fn play_bingo(bingo_game: &mut BingoGame) -> Option<Board> {
+fn play_bingo(bingo_game: &mut BingoGame) -> Option<usize> {
     let x = bingo_game.boards.iter().find(|board| is_bingo(board));
     for number in bingo_game.drawn_numbers.iter() {
-        for board in bingo_game.boards.iter_mut() {
+        for board_index in 0..bingo_game.boards.len() {
+            let mut board = &mut bingo_game.boards[board_index];
             draw_number(board, *number);
             if is_bingo(board) {
-                return Some(*board);
+                return Some(board_index as usize);
             }
         }
     }
@@ -134,9 +138,10 @@ fn read_lines_from_file(filename: &str) -> Vec<String> {
 fn solve(filename: &str) -> u32 {
     let input = read_lines_from_file(filename);
     let mut bingo_game = parse_bingo_game(input);
-    let winning_board = play_bingo(&mut bingo_game);
-    if winning_board.is_some() {
-        return calculate_score(&winning_board.unwrap());
+    let winning_board_index = play_bingo(&mut bingo_game);
+    if winning_board_index.is_some() {
+        let board = &bingo_game.boards[winning_board_index.unwrap()];
+        return calculate_score(board);
     }
     return 0;
 }
@@ -226,6 +231,7 @@ fn test_drawing() {
 fn test_parse_bingo_game() {
     let input = vec![
         "1,2".to_string(),
+        "".to_string(),
         "1 2".to_string(),
         "3 4".to_string(),
         "".to_string(),
