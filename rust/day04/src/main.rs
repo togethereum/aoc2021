@@ -2,7 +2,8 @@ use std::fs::File;
 use std::io::Read;
 
 fn main() {
-    println!("Hello, world!");
+    let score = solve("input.txt");
+    println!("{}", score);
 }
 
 #[derive(Debug)]
