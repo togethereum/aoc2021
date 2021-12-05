@@ -1,3 +1,6 @@
+use std::fs::File;
+use std::io::Read;
+
 fn main() {
     println!("Hello, world!");
 }
@@ -107,6 +110,37 @@ fn parse_bingo_game(input: Vec<String>) -> BingoGame {
     return bingo_game;
 }
 
+fn play_bingo(bingo_game: &mut BingoGame) -> Option<Board> {
+    let x = bingo_game.boards.iter().find(|board| is_bingo(board));
+    for number in bingo_game.drawn_numbers.iter() {
+        for board in bingo_game.boards.iter_mut() {
+            draw_number(board, *number);
+            if is_bingo(board) {
+                return Some(*board);
+            }
+        }
+    }
+    return None;
+}
+
+fn read_lines_from_file(filename: &str) -> Vec<String> {
+    let mut f = File::open(filename).expect("file not found");
+    let mut contents = String::new();
+    f.read_to_string(&mut contents)
+        .expect("something went wrong reading the file");
+    contents.lines().map(|s| s.to_string()).collect()
+}
+
+fn solve(filename: &str) -> u32 {
+    let input = read_lines_from_file(filename);
+    let mut bingo_game = parse_bingo_game(input);
+    let winning_board = play_bingo(&mut bingo_game);
+    if winning_board.is_some() {
+        return calculate_score(&winning_board.unwrap());
+    }
+    return 0;
+}
+
 #[test]
 fn test_is_bingo() {
     let mut board = Board {
@@ -203,4 +237,10 @@ fn test_parse_bingo_game() {
     assert!(bingo_game.drawn_numbers.contains(&2));
     assert!(bingo_game.boards.len() == 2);
     assert!(bingo_game.boards[0].cells[0][0].number == 1);
+}
+
+#[test]
+fn test_solve() {
+    let score = solve("test_input.txt");
+    assert_eq!(score, 4512);
 }
