@@ -4,6 +4,8 @@ use std::io::Read;
 fn main() {
     let score = solve_1("input.txt");
     println!("{}", score);
+    let score = solve_2("input.txt");
+    println!("{}", score);
 }
 
 #[derive(Debug)]
