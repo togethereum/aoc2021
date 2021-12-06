@@ -6,4 +6,4 @@
 
 (deftest a-test
   (testing "Resolve fn"
-    (is (= 42 ((resolve-fn "aoc2021.core-test" "dummy"))))))
+           (is (= 42 ((resolve-name "aoc2021.core-test" "dummy"))))))
