@@ -10,6 +10,10 @@
   (let [[x1 y1 x2 y2] (apply map max coords)]
       [(max x1 x2) (max y1 y2)]))
 
+(defn init-matrix
+  [x y]
+  (repeat x (repeat y 0)))
+
 (defn solve-1
   [lines])
 

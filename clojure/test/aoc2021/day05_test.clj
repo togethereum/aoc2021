@@ -9,3 +9,7 @@
 (deftest max-coord-test
   (is (= (max-coords [[1 2 3 4] [0 0 0 0]])
          [3 4])))
+
+(deftest init-matrix-test
+  (is (= (init-matrix 3 4)
+         [[0 0 0 0] [0 0 0 0] [0 0 0 0]])))
