@@ -12,3 +12,5 @@
        first))
 
 (def expected-1 7)
+
+(defn solve-2 [lines])

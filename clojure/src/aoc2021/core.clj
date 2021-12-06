@@ -25,6 +25,8 @@
   [& args]
   (let [day (first args)]
     (println (solve-day day 1 "test"))
-    (println (solve-day day 1 "prod"))))
+    (println (solve-day day 1 "prod"))
+    (println (solve-day day 2 "test"))
+    (println (solve-day day 2 "prod"))))
 
 
