@@ -44,9 +44,8 @@ fn draw_number(board: &mut Board, number: u8) {
 }
 
 fn is_bingo(board: &Board) -> bool {
-    let mut found = true;
     for row in 0..board.cells.len() {
-        found = true;
+        let mut found = true;
         for col in 0..board.cells[row].len() {
             if !board.cells[row][col].is_called {
                 found = false;
@@ -58,7 +57,7 @@ fn is_bingo(board: &Board) -> bool {
         }
     }
     for col in 0..board.cells[0].len() {
-        found = true;
+        let mut found = true;
         for row in 0..board.cells.len() {
             if !board.cells[row][col].is_called {
                 found = false;
@@ -119,7 +118,7 @@ fn parse_bingo_game(input: Vec<String>) -> BingoGame {
 fn play_bingo_first_winner(bingo_game: &mut BingoGame) -> Option<usize> {
     for number in bingo_game.drawn_numbers.iter() {
         for board_index in 0..bingo_game.boards.len() {
-            let mut board = &mut bingo_game.boards[board_index];
+            let board = &mut bingo_game.boards[board_index];
             draw_number(board, *number);
             if is_bingo(board) {
                 return Some(board_index as usize);
