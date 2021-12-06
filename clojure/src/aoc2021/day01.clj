@@ -1,14 +1,8 @@
-(ns aoc2021.day01
-    (:require [clojure.java.io :as io]))
+(ns aoc2021.day01)
 
-(defn read-lines
-   [fname]
-   (-> fname io/resource io/file io/reader line-seq))
-
-(defn solve
-   [fname]
-   (->> fname
-       read-lines
+(defn solve-1
+   [lines]
+   (->> lines
        (map read-string)
        (reduce (fn [[sum prev] cur]
                   (if (> cur prev)
@@ -16,3 +10,5 @@
                      [sum cur]))
                [-1 0])
        first))
+
+(def expected-1 7)
