@@ -13,9 +13,11 @@ struct BingoNumber {
 }
 
 #[derive(Debug)]
+#[derive(Default)]
 struct Board {
     cells: Vec<Vec<BingoNumber>>,
     last_called: u8,
+    is_winner: bool,
 }
 
 #[derive(Debug)]
@@ -91,14 +93,14 @@ fn parse_bingo_game(input: Vec<String>) -> BingoGame {
 
     let mut board = Board {
         cells: Vec::new(),
-        last_called: 0,
+        ..Default::default()
     };
     for line in input[2..].iter() {
         if line.is_empty() {
             bingo_game.boards.push(board);
             board = Board {
                 cells: Vec::new(),
-                last_called: 0,
+                ..Default::default()
             };
             continue;
         }
@@ -161,6 +163,17 @@ fn solve_1(filename: &str) -> u32 {
     return 0;
 }
 
+fn solve_2(filename: &str) -> u32 {
+    let input = read_lines_from_file(filename);
+    let mut bingo_game = parse_bingo_game(input);
+    let winning_board_index = play_bingo_last_winner(&mut bingo_game);
+    if winning_board_index.is_some() {
+        let board = &bingo_game.boards[winning_board_index.unwrap()];
+        return calculate_score(board);
+    }
+    return 0;
+}
+
 #[test]
 fn test_is_bingo() {
     let mut board = Board {
@@ -179,6 +192,7 @@ fn test_is_bingo() {
             is_called: false,
         }]],
         last_called: 1,
+        ..Default::default()
     };
     assert!(!is_bingo(&board));
 
@@ -207,7 +221,7 @@ fn test_calculate_score() {
                         number: 4,
                         is_called: false,
                     }]],
-        last_called: 1,
+        ..Default::default()
     };
     board.last_called = 2;
 
@@ -231,7 +245,7 @@ fn test_drawing() {
                         number: 4,
                         is_called: false,
                     }]],
-        last_called: 1,
+        ..Default::default()
     };
     assert!(!is_bingo(&board));
 
