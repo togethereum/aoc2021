@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::Read;
 
 fn main() {
-    let score = solve("input.txt");
+    let score = solve_1("input.txt");
     println!("{}", score);
 }
 
@@ -114,7 +114,21 @@ fn parse_bingo_game(input: Vec<String>) -> BingoGame {
     return bingo_game;
 }
 
-fn play_bingo(bingo_game: &mut BingoGame) -> Option<usize> {
+fn play_bingo_first_winner(bingo_game: &mut BingoGame) -> Option<usize> {
+    let x = bingo_game.boards.iter().find(|board| is_bingo(board));
+    for number in bingo_game.drawn_numbers.iter() {
+        for board_index in 0..bingo_game.boards.len() {
+            let mut board = &mut bingo_game.boards[board_index];
+            draw_number(board, *number);
+            if is_bingo(board) {
+                return Some(board_index as usize);
+            }
+        }
+    }
+    return None;
+}
+
+fn play_bingo_last_winner(bingo_game: &mut BingoGame) -> Option<usize> {
     let x = bingo_game.boards.iter().find(|board| is_bingo(board));
     for number in bingo_game.drawn_numbers.iter() {
         for board_index in 0..bingo_game.boards.len() {
@@ -136,10 +150,10 @@ fn read_lines_from_file(filename: &str) -> Vec<String> {
     contents.lines().map(|s| s.to_string()).collect()
 }
 
-fn solve(filename: &str) -> u32 {
+fn solve_1(filename: &str) -> u32 {
     let input = read_lines_from_file(filename);
     let mut bingo_game = parse_bingo_game(input);
-    let winning_board_index = play_bingo(&mut bingo_game);
+    let winning_board_index = play_bingo_first_winner(&mut bingo_game);
     if winning_board_index.is_some() {
         let board = &bingo_game.boards[winning_board_index.unwrap()];
         return calculate_score(board);
@@ -247,7 +261,7 @@ fn test_parse_bingo_game() {
 }
 
 #[test]
-fn test_solve() {
-    let score = solve("test_input.txt");
+fn test_solve_1() {
+    let score = solve_1("test_input.txt");
     assert_eq!(score, 4512);
 }
