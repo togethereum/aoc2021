@@ -117,7 +117,6 @@ fn parse_bingo_game(input: Vec<String>) -> BingoGame {
 }
 
 fn play_bingo_first_winner(bingo_game: &mut BingoGame) -> Option<usize> {
-    let x = bingo_game.boards.iter().find(|board| is_bingo(board));
     for number in bingo_game.drawn_numbers.iter() {
         for board_index in 0..bingo_game.boards.len() {
             let mut board = &mut bingo_game.boards[board_index];
@@ -131,13 +130,19 @@ fn play_bingo_first_winner(bingo_game: &mut BingoGame) -> Option<usize> {
 }
 
 fn play_bingo_last_winner(bingo_game: &mut BingoGame) -> Option<usize> {
-    let x = bingo_game.boards.iter().find(|board| is_bingo(board));
+    let mut winner_count = 0;
     for number in bingo_game.drawn_numbers.iter() {
         for board_index in 0..bingo_game.boards.len() {
             let mut board = &mut bingo_game.boards[board_index];
             draw_number(board, *number);
             if is_bingo(board) {
-                return Some(board_index as usize);
+                if !board.is_winner {
+                    winner_count += 1;
+                }
+                board.is_winner = true;
+                if winner_count == bingo_game.boards.len() {
+                    return Some(board_index as usize);
+                }
             }
         }
     }
@@ -278,4 +283,10 @@ fn test_parse_bingo_game() {
 fn test_solve_1() {
     let score = solve_1("test_input.txt");
     assert_eq!(score, 4512);
+}
+
+#[test]
+fn test_solve_2() {
+    let score = solve_2("test_input.txt");
+    assert_eq!(score, 1924);
 }
