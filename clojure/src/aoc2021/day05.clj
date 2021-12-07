@@ -36,6 +36,16 @@
             board
             points)))
 
+(defn board-drawn-with-lines
+   [str-lines]
+  (let [lines (map parse-line str-lines)
+        [max-x max-y] (max-coords lines)
+        board (init-matrix max-x max-y)]
+    (reduce (fn [board line]
+               (draw-line board line))
+      board
+      lines)))
+
 (defn solve-1
   [lines])
 
