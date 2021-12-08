@@ -1,6 +1,7 @@
 (ns aoc2021.day05-test
   (:require [clojure.test :refer :all]
             [clojure.string :as str]
+            [aoc2021.core :refer [read-lines]]
             [aoc2021.day05 :refer :all]))
 
 (deftest parse-line-test
@@ -49,3 +50,7 @@
   (let [str-lines (str/split-lines test-input)]
     (is (= (solve-1 str-lines)
           5))))
+
+(deftest solve-1-prod
+  (let [str-lines (read-lines "prod/day05.txt")]
+    (println (solve-1 str-lines))))
