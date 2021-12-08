@@ -21,3 +21,7 @@
 (defn solve-1
   []
   (count-after-n-days 80 prod-input))
+
+(defn solve-2
+  []
+  (count-after-n-days 256 prod-input))

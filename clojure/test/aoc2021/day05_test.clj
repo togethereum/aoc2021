@@ -1,5 +1,6 @@
 (ns aoc2021.day05-test
   (:require [clojure.test :refer :all]
+            [clojure.string :as str]
             [aoc2021.day05 :refer :all]))
 
 (deftest parse-line-test
@@ -30,3 +31,21 @@
            [[0 1 0 0]
             [0 1 0 0]
             [0 0 0 0]]))))
+
+(def test-input "
+0,9 -> 5,9
+8,0 -> 0,8
+9,4 -> 3,4
+2,2 -> 2,1
+7,0 -> 7,4
+6,4 -> 2,0
+0,9 -> 2,9
+3,4 -> 1,4
+0,0 -> 8,8
+5,5 -> 8,2
+")
+
+(deftest solve-1-test
+  (let [str-lines (str/split-lines test-input)]
+    (is (= (solve-1 str-lines)
+          5))))

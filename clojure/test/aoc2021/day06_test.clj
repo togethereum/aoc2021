@@ -16,3 +16,6 @@
 
 (deftest solve-1-test
   (println (solve-1)))
+
+(deftest solve-2-test
+  (println (solve-2)))
