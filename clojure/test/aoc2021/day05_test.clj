@@ -17,18 +17,24 @@
          [[0 0 0 0] [0 0 0 0] [0 0 0 0]])))
 
 (deftest points-of-line-test
-  (is (= (points-of-line [1 2 3 2])
+  (is (= (points-of-line [1 2 3 2] false)
          [[1 2] [2 2] [3 2]]))
-  (is (= (points-of-line [3 2 1 2])
+  (is (= (points-of-line [3 2 1 2] false)
          [[1 2] [2 2] [3 2]]))
-  (is (= (points-of-line [1 2 1 4])
+  (is (= (points-of-line [1 2 1 4] false)
          [[1 2] [1 3] [1 4]]))
-  (is (= (points-of-line [1 4 1 2])
-         [[1 2] [1 3] [1 4]])))
+  (is (= (points-of-line [1 4 1 2] false)
+         [[1 2] [1 3] [1 4]]))
+  (is (= (points-of-line [1 3, 3 5] true)
+         [[1 3] [2 4] [3 5]]))
+  (is (= (points-of-line [3 5, 1 3] true)
+         [[1 3] [2 4] [3 5]]))
+  (is (= (points-of-line [0 4, 3 1] true)
+         [[0 4] [1 3] [2 2] [3 1]])))
 
 (deftest draw-line-test
   (let [m (init-matrix 3 4)]
-    (is (= (draw-line m [0 1, 1 1])
+    (is (= (draw-line m [0 1, 1 1] false)
            [[0 1 0 0]
             [0 1 0 0]
             [0 0 0 0]]))))
@@ -54,3 +60,12 @@
 (deftest solve-1-prod
   (let [str-lines (read-lines "prod/day05.txt")]
     (println (solve-1 str-lines))))
+
+(deftest solve-2-test
+  (let [str-lines (str/split-lines test-input)]
+    (is (= (solve-2 str-lines)
+           12))))
+
+(deftest solve-2-prod
+  (let [str-lines (read-lines "prod/day05.txt")]
+    (println (solve-2 str-lines))))
