@@ -1,4 +1,5 @@
-(ns aoc2021.day09)
+(ns aoc2021.day09
+  (:require [clojure.string :as str]))
 
 (defn neighbor-coords
   [m x y]
@@ -9,9 +10,30 @@
     (remove nil? coords)))
 
 (defn neighbors
-  [m x y])
+  [m x y]
+  (map #(get-in m %) (neighbor-coords m x y)))
 
 (defn low-points
   [m]
-  (let [w (count m)
-        h (count (first m))]))
+  (remove nil?
+    (for [i (range (count m))
+          j (range (count (first m)))]
+      (let [val (get-in m [i j])
+            min-val (apply min (neighbors m i j))]
+        (when (< val min-val) val)))))
+
+(defn line-to-numbers
+  [line]
+  (vec
+    (map #(read-string (str %))
+         line)))
+
+(defn solve-1
+  [str-lines]
+  (let [m (->> str-lines
+               (remove str/blank?)
+               (map line-to-numbers)
+               vec)
+        low (low-points m)]
+    (+ (count low)
+       (apply + low))))
