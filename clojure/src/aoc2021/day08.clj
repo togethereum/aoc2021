@@ -37,7 +37,7 @@
 (def guess-order [1 4 7 8 3 9 0 6 5 2])
 
 (def guess-logic
-  [[6 0 nil]
+  [[6 7 nil]
    [2 nil nil]
    [5 nil nil]
    [5 7 nil]
