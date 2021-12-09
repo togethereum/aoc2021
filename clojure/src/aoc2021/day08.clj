@@ -62,3 +62,26 @@
                        [{} sets]
                        guess-order)]
        (set/map-invert paired)))
+
+(defn merge-digits
+  [digits]
+  (->> digits
+      (map str)
+      (apply str)
+      read-string))
+
+(defn solve-line
+  [str-line]
+  (let [[digits display] (split-line str-line)
+        segment-to-number (guess-numbers (map #(into #{} %) digits))
+        display-sets (map #(into #{} %) display)
+        display-digits (map segment-to-number display-sets)]
+    (merge-digits display-digits)))
+
+(defn solve-2
+  [str-lines]
+  (->> str-lines
+       (remove str/blank?)
+       (map solve-line)
+       (apply +)))
+

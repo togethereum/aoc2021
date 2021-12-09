@@ -63,4 +63,16 @@
   (is (= (guess-numbers (keys sample-pairs))
         sample-pairs)))
 
+(deftest merge-digits-test
+  (is (= (merge-digits [2 3 5])
+        235)))
+
+(deftest solve-line-test
+  (is (= (solve-line "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf")
+        5353)))
+
+(deftest solve-2-test
+  (is (= (solve-2 (str/split-lines test-input))
+         61229)))
+
 
