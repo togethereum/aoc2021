@@ -31,3 +31,36 @@
 (deftest solve-1-prod
   (let [str-lines (read-lines "prod/day08.txt")]
     (println (solve-1 str-lines))))
+
+(def sample-pairs-kw
+ {:acedgfb 8
+  :cdfbe 5
+  :gcdfa 2
+  :fbcad 3
+  :dab 7
+  :cefabd 9
+  :cdfgeb 6
+  :eafb 4
+  :cagedb 0
+  :ab 1})
+
+(def sample-pairs
+  (zipmap
+    (map #(into #{} (name %))
+         (keys sample-pairs-kw))
+    (vals sample-pairs-kw)))
+
+(deftest has-count-and-is-subset-test
+  (let [sets [#{1 2} #{3 4} #{3 5} #{3} #{4}]]
+    (is (= (has-count-and-is-subset sets 1 nil nil)
+          #{3}))
+    (is (= (has-count-and-is-subset sets 2 #{3} nil)
+          #{3 4}))
+    (is (= (has-count-and-is-subset sets 2 nil #{1 3 5})
+          #{3 5}))))
+
+(deftest guess-numbers-test
+  (is (= (guess-numbers (keys sample-pairs))
+        sample-pairs)))
+
+
