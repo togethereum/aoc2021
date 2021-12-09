@@ -66,6 +66,7 @@
 (defn merge-digits
   [digits]
   (->> digits
+      (drop-while zero?)
       (map str)
       (apply str)
       read-string))

@@ -65,7 +65,9 @@
 
 (deftest merge-digits-test
   (is (= (merge-digits [2 3 5])
-        235)))
+        235))
+  (is (= (merge-digits [0 0 3 5])
+       35)))
 
 (deftest solve-line-test
   (is (= (solve-line "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf")
@@ -75,4 +77,6 @@
   (is (= (solve-2 (str/split-lines test-input))
          61229)))
 
-
+(deftest solve-2-prod
+  (let [str-lines (read-lines "prod/day08.txt")]
+    (println (solve-2 str-lines))))
