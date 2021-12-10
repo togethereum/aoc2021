@@ -8,3 +8,11 @@
       \} [[\(] nil]
       \< [[\( \{ \<] nil]
       \] [stack \]])))
+
+(deftest process-line-test
+  (are [line want] (= (process-line line) want)
+    "[<>]" [[] nil]
+    "[<" [[\[ \<] nil]
+    "[}" [[\[] \}]
+    "[]<>" [[] nil]
+    "<>]" [[] \]]))

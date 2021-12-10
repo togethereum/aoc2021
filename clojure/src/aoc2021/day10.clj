@@ -11,9 +11,23 @@
 (defn process-char
   [stack ch]
   (cond
+    (empty? stack)
+    (if (opening ch)
+      [[ch] nil]
+      [[] ch])
     (= (matching ch) (peek stack))
     [(pop stack) nil]
     (opening ch)
     [(conj stack ch) nil]
     :else
     [stack ch]))
+
+(defn process-line
+  [line]
+  (reduce
+    (fn [[stack err] ch]
+      (if err
+        [stack err]
+        (process-char stack ch)))
+    [[] nil]
+    (seq line)))
