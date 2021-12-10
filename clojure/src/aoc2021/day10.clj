@@ -11,10 +11,10 @@
 (defn process-char
   [stack ch]
   (cond
+    (and (empty? stack) (opening ch))
+    [[ch] nil]
     (empty? stack)
-    (if (opening ch)
-      [[ch] nil]
-      [[] ch])
+    [[] ch]
     (= (matching ch) (peek stack))
     [(pop stack) nil]
     (opening ch)
