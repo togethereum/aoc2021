@@ -31,3 +31,11 @@
         (process-char stack ch)))
     [[] nil]
     (seq line)))
+
+(def score {\) 3, \] 57, \} 1197, \> 25137})
+
+(defn solve-1-lines
+  [str-lines]
+  (let [bad-chars (map #(-> % process-line second score)
+                       str-lines)]
+    (apply + (remove nil? bad-chars))))
