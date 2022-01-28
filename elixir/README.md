@@ -1,6 +1,6 @@
 # Advent of Code 2021
 
-Some puzzles of 
+Well, I finally started to solve some exercises on Hackerrank.
 
 ## Installation
 
@@ -15,7 +15,4 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/advent](https://hexdocs.pm/advent).
 
